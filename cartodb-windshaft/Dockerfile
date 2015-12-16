@@ -27,7 +27,10 @@ RUN cd /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION && npm install
 
 RUN mkdir /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/logs
 
-ADD ./$ENVIRONMENT.js /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/config/environments/$ENVIRONMENT.js
+RUN cd /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/config/environments \
+      && cp .ENVIRONMENT.js.example $ENVIRONMENT.js
+
+ADD ./startup.sh /opt/startup.sh
 
 EXPOSE 8181
 
