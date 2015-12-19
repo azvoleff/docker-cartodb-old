@@ -26,7 +26,7 @@ RUN curl -sSL https://github.com/CartoDB/CartoDB-SQL-API/archive/$SQL_VERSION.ta
 RUN cd /usr/src/CartoDB-SQL-API-$SQL_VERSION && npm install
 
 RUN cd /usr/src/CartoDB-SQL-API-$SQL_VERSION/config/environments \
-      && cp .ENVIRONMENT.js.example $ENVIRONMENT.js
+      && cp $ENVIRONMENT.js.example $ENVIRONMENT.js
 
 ADD ./startup.sh /opt/startup.sh
 RUN /opt/startup.sh

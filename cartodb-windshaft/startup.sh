@@ -23,9 +23,3 @@ fi
 if [ ! -z "$DB_HOST" ]; then
     perl -0pi -e 's/(,postgres:\s*\{.{0,100}host:\s*[\x27\x60])[.\d\w]*/$1'"$DB_HOST"'/igs' $CONFIG_FILE
 fi
-
-PORT=80
-cd /usr/src/cartodb-$CDB_VERSION
-#bundle exec script/restore_redis
-#bundle exec script/resque > resque.log 2>&1 &
-bundle exec rails server -p 80
