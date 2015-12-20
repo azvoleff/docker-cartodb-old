@@ -2,30 +2,35 @@
 
 export RAILS_ENV=$ENVIRONMENT
 
-perl -0pi -e 's/(\s*http_port:\s*)[\d]*/${1}80/igs' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
-perl -0pi -e 's/(\s*https_port:\s*)[\d]*/${1}443/igs' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
+CONFIG_FILE=/usr/src/cartodb-$CDB_VERSION/config/app_config.yml
+DB_CONFIG_FILE=/usr/src/cartodb-$CDB_VERSION/config/database.yml
+
+: ${REDIS_HOST:=localhost}
+: ${REDIS_PORT:=6379}
+
+# Wait for redis to be up
+while ! nc -z $REDIS_HOST $REDIS_PORT ; do sleep 3; done
+
+perl -0pi -e 's/(\s*http_port:\s*)[\d]*/${1}80/igs' $CONFIG_FILE
+perl -0pi -e 's/(\s*https_port:\s*)[\d]*/${1}443/igs' $CONFIG_FILE
 if [ ! -z "$DOMAIN" ]; then
-    sed -ri 's/localhost.lan/'"$DOMAIN"'/' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
+    sed -ri 's/localhost.lan/'"$DOMAIN"'/' $CONFIG_FILE
 fi
 if [ ! -z "$SUBDOMAINLESS" ]; then
-    sed -ri 's/^(\s*)subdomainless_urls:.*$/\1subdomainless_urls: true/' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
+    sed -ri 's/^(\s*)subdomainless_urls:.*$/\1subdomainless_urls: true/' $CONFIG_FILE
     # remove dot from session_domain
-    sed -ri 's/^(\s*session_domain:\s*)([\x27\x60])[.]?([:alnum:.]*)/\1\2\3/' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
+    sed -ri 's/^(\s*session_domain:\s*)([\x27\x60])[.]?([:alnum:.]*)/\1\2\3/' $CONFIG_FILE
 fi
-if [ ! -z "$REDIS_HOST" ]; then
-    perl -0pi -e 's/(\s*redis:.{0,100}host:\s*[\x27\x60])[.\d\w]*/$1'"$REDIS_HOST"'/igs' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
-fi
-if [ ! -z "$REDIS_PORT" ]; then
-    perl -0pi -e 's/(\s*redis:.{0,100}port:\s*)\d*/$1'"$REDIS_PORT"'/igs' /usr/src/cartodb-$CDB_VERSION/config/app_config.yml
-fi
+perl -0pi -e 's/(\s*redis:.{0,100}host:\s*[\x27\x60])[.\d\w]*/${1}'"$REDIS_HOST"'/igs' $CONFIG_FILE
+perl -0pi -e 's/(\s*redis:.{0,100}port:\s*)\d*/${1}'"$REDIS_PORT"'/igs' $CONFIG_FILE
 if [ ! -z "$DB_PASSWORD" ]; then
-    sed -ri 's/^(\s*)password:.*$/\1password: '"$DB_PASSWORD"'/' /usr/src/cartodb-$CDB_VERSION/config/database.yml
+    sed -ri 's/^(\s*)password:.*$/\1password: '"$DB_PASSWORD"'/' $DB_CONFIG_FILE
 fi
 if [ ! -z "$DB_PORT" ]; then
-    sed -ri 's/^(\s*)port:.*$/\1port: '"$DB_PORT"'/' /usr/src/cartodb-$CDB_VERSION/config/database.yml
+    sed -ri 's/^(\s*)port:.*$/\1port: '"$DB_PORT"'/' $DB_CONFIG_FILE
 fi
 if [ ! -z "$DB_HOST" ]; then
-    sed -ri 's/^(\s*)host:.*$/\1host: '"$DB_HOST"'/' /usr/src/cartodb-$CDB_VERSION/config/database.yml
+    sed -ri 's/^(\s*)host:.*$/\1host: '"$DB_HOST"'/' $DB_CONFIG_FILE
 fi
 
 cd /usr/src/cartodb-$CDB_VERSION

@@ -17,6 +17,7 @@ RUN apt-get update \
            zip gdal-bin \ 
            zlib1g-dev libssl-dev libxml2-dev libxslt-dev libreadline6-dev libyaml-dev libffi-dev \
            curl \
+           netcat \
            git \
       && apt-get clean \
       && rm -rf /var/lib/apt/lists/*
@@ -29,8 +30,7 @@ RUN cd /usr/src/CartoDB-SQL-API-$SQL_VERSION/config/environments \
       && cp $ENVIRONMENT.js.example $ENVIRONMENT.js
 
 ADD ./startup.sh /opt/startup.sh
-RUN /opt/startup.sh
 
 EXPOSE 8080
 
-CMD node /usr/src/CartoDB-SQL-API-$SQL_VERSION/app.js $ENVIRONMENT
+CMD ["/bin/bash", "/opt/startup.sh"]

@@ -40,6 +40,7 @@ RUN apt-get update \
            zlib1g-dev libssl-dev libxml2-dev libxslt-dev libreadline6-dev libyaml-dev libffi-dev \
            libpq5 libpq-dev \
            libicu-dev \
+           netcat \
            postgresql-client-$PG_MAJOR \
            postgresql-server-dev-$PG_MAJOR \
            proj proj-bin proj-data libproj-dev \
@@ -87,8 +88,8 @@ RUN cd /usr/src/cartodb-$CDB_VERSION/config \
       && cp app_config.yml.sample app_config.yml \
       && cp database.yml.sample database.yml
 
-EXPOSE 80
-
 ADD ./startup.sh /opt/startup.sh
+
+EXPOSE 80
 
 CMD ["/bin/bash", "/opt/startup.sh"]
