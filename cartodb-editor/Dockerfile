@@ -26,21 +26,25 @@ RUN add-apt-repository -y ppa:cartodb/gis
 RUN apt-get update \
       && apt-get install -y --no-install-recommends \
            autoconf binutils-doc bison build-essential flex \
-           nodejs \
+           curl \
+           gdal-bin libgdal-dev libgdal1h libgdal1-dev \
+           git \
            imagemagick unp zip \
-           curl libreadline-dev openssl libncurses5-dev libgdbm-dev \
-           zlib1g-dev libssl-dev libxml2-dev libxslt-dev libreadline6-dev libyaml-dev libffi-dev \
-           postgresql-server-dev-$PG_MAJOR \
-           libicu-dev \
-           python-dev python-pip \
-           libpq5 libpq-dev \
-           proj proj-bin proj-data libproj-dev \
            libjson0 libjson0-dev python-simplejson \
            libgeos-c1v5 libgeos-dev \
-           gdal-bin libgdal-dev libgdal1h libgdal1-dev \
            libxml2-dev \
            liblwgeom-2.1.8 \
-           git \
+           nodejs \
+           ogr2ogr2-static-bin \
+           libreadline-dev openssl libncurses5-dev libgdbm-dev \
+           zlib1g-dev libssl-dev libxml2-dev libxslt-dev libreadline6-dev libyaml-dev libffi-dev \
+           libpq5 libpq-dev \
+           libicu-dev \
+           postgresql-client-$PG_MAJOR \
+           postgresql-server-dev-$PG_MAJOR \
+           proj proj-bin proj-data libproj-dev \
+           python-dev python-pip \
+           supervisor \
       && apt-get clean \
       && rm -rf /var/lib/apt/lists/*
 

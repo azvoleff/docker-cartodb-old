@@ -2,8 +2,9 @@
 
 CONFIG_FILE=/usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/config/environments/$ENVIRONMENT.js
 
+perl -0pi -e 's/(environment:\s*[\x27\x60])[.\d\w]*/$1'"$ENVIRONMENT"'/igs' $CONFIG_FILE
 if [ ! -z "$DOMAIN" ]; then
-    sed -ri 's/(,user_from_host:\s*\x27\^\(.*\)\\\\.)cartodb\\\\.com/\1'"${DOMAIN//\./\\\\\\\\.}"'/' $CONFIG_FILE
+    perl -0pi -e 's/(,user_from_host:\s*[\x27\x60]).*(?=\$)/$1^(.*)\\\\.'"${DOMAIN//\./\\\\\\\\.}"'/igs' $CONFIG_FILE
 fi
 if [ ! -z "$REDIS_HOST" ]; then
     perl -0pi -e 's/(,redis:\s*\{.{0,100}host:\s*[\x27\x60])[.\d\w]*/$1'"$REDIS_HOST"'/igs' $CONFIG_FILE
