@@ -31,7 +31,7 @@ RUN mkdir /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/logs
 RUN cd /usr/src/Windshaft-cartodb-$WINDSHAFT_VERSION/config/environments \
       && cp $ENVIRONMENT.js.example $ENVIRONMENT.js
 
-ADD ./startup.sh /opt/startup.sh
+COPY ./startup.sh /opt/startup.sh
 
 EXPOSE 8181
 

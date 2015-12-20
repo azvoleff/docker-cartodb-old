@@ -29,7 +29,7 @@ RUN cd /usr/src/CartoDB-SQL-API-$SQL_VERSION && npm install
 RUN cd /usr/src/CartoDB-SQL-API-$SQL_VERSION/config/environments \
       && cp $ENVIRONMENT.js.example $ENVIRONMENT.js
 
-ADD ./startup.sh /opt/startup.sh
+COPY ./startup.sh /opt/startup.sh
 
 EXPOSE 8080
 
