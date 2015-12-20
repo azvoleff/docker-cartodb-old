@@ -8,10 +8,10 @@ nginx:
     - cartodb-windshaft
     - cartodb-sql-api
 haproxy-redis:
- restart: always
- build: haproxy-redis/
- expose:
-   - "6379"
+  restart: always
+  build: haproxy-redis/
+  expose:
+    - "6379"
 cartodb-editor:
   restart: always
   build: cartodb-editor/
@@ -21,8 +21,6 @@ cartodb-editor:
     - cartodb-sql-api
   expose:
     - "80"
-  environment:
-    - DOMAIN=dev.cidata.io
 cartodb-windshaft:
   restart: always
   build: cartodb-windshaft/
@@ -37,15 +35,3 @@ cartodb-sql-api:
     - haproxy-redis
   expose:
     - "8080"
-# cartodb-resque:
-#   restart: always
-#   build: cartodb-editor/
-#   command: RAILS_ENV=production bundle exec ./script/resque
-# cartodb-synctables:
-#   restart: always
-#   build: cartodb-editor/
-#   command: 
-# logstash-forwarder:
-#   restart: always
-# varnish:
-#   restart: always
