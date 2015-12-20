@@ -46,7 +46,4 @@ if [ ! -z "$CREATE_DB" ]; then
     # bundle exec rake cartodb:setup_max_import_table_row_count_based_on_disk_quota
 fi
 
-PORT=80
-#bundle exec script/restore_redis
-#bundle exec script/resque > resque.log 2>&1 &
-bundle exec rails server -p 80
+/usr/local/bin/supervisord

@@ -45,7 +45,6 @@ RUN apt-get update \
            postgresql-server-dev-$PG_MAJOR \
            proj proj-bin proj-data libproj-dev \
            python-dev python-pip \
-           supervisor \
       && apt-get clean \
       && rm -rf /var/lib/apt/lists/*
 
@@ -88,7 +87,10 @@ RUN cd /usr/src/cartodb-$CDB_VERSION/config \
       && cp app_config.yml.sample app_config.yml \
       && cp database.yml.sample database.yml
 
-ADD ./startup.sh /opt/startup.sh
+# Install supervisor from pip to get newest version
+RUN pip install supervisor
+COPY supervisord.conf /etc/supervisord.conf
+COPY ./startup.sh /opt/startup.sh
 
 EXPOSE 80
 
